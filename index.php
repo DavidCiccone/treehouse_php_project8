@@ -1,19 +1,13 @@
 <?php
 require_once 'inc/bootstrap.php';
 
-if(request()->cookies->has('access_token')){
-  echo "logged in";
-}else{
-  echo "not working";
-};
-
 $pageTitle = "Time Tracker";
 $page = null;
 
 include 'inc/header.php';
 ?>
     <div class="col-container actions-container">
-
+    <?php echo display_success(); ?>
       <h1>Welcome</h1>
       <p class="actions-copy">What would you like to do today?</p>
       <div class="actions-wrapper">
@@ -34,12 +28,14 @@ include 'inc/header.php';
               Add Task
             </a>
           </li>
+          <?php if (!isAuthenticated()) : ?>
           <li class="actions-item">
             <a class="actions-link" href="register.php">
               <span class="actions-icon">
                 <svg viewbox="0 0 64 64"><use xlink:href="#user_icon"></use></svg>
               </span>
                 Register
+          <?php endif; ?>
 		</div>
 
 <?php include("inc/footer.php"); ?>

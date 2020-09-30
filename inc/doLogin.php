@@ -5,10 +5,12 @@ require_once 'bootstrap.php';
 $user = findIfUserExists(request()->get('username'));
 
 if(empty($user)) {
+    $session->getflashbag()->add('error', 'Username or password incorrect.');
     redirect('/login.php');
 }
 
 if(!password_verify(request()->get('password'), $user['password'])) {
+    $session->getflashbag()->add('error', 'Username or password incorrect.');
     redirect('/login.php');
 }
 
@@ -24,6 +26,6 @@ $jwt = \Firebase\JWT\JWT::encode([
 ], getenv("SECRET_KEY"),'HS256');
 
 $accessToken = new Symfony\Component\HttpFoundation\Cookie('access_token', $jwt, $expTime, '/', getenv('COOKIE_DOMAIN'));
-
+$session->getflashbag()->add('success', 'Login successful.');
 redirect('/',['cookies' =>[$accessToken]]);
 
